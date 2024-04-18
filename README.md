@@ -1,4 +1,4 @@
-#Wallabot helper
+# Wallabot helper
 
 This extension will be later found on the Chrome Web Store.
 
