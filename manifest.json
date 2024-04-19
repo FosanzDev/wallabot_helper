@@ -3,26 +3,29 @@
   "name": "Wallabot Helper",
   "description": "Official Wallabot session capturer for Wallabot tool",
   "author": "FosanzDev", 
-  "version": "0.1",
+  "version": "0.2",
   "permissions": [
-    "declarativeNetRequest",
-    "<all_urls>",
     "tabs",
-    "storage"
+    "storage",
+    "webRequest"
+  ],
+  "host_permissions": [
+    "*://*.wallapop.com/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "icons": {
-    "500": "images/ico.png",
-    "128": "images/ico128.png"
+    "128": "images/ico128.png",
+    "500": "images/ico.png"
   },
   "action": {
     "default_popup": "templates/notification.html"
   },
   "web_accessible_resources": [
-    "templates/notification.html",
-    "templates/notWallapop.html",
-    "templates/token_detected.html"
+    {
+      "resources": ["templates/notification.html", "templates/notWallapop.html", "templates/token_detected.html"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }
