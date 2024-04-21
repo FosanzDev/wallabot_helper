@@ -19,7 +19,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
     if (authHeader && authHeader.value.startsWith('Bearer ')) {
       // Token detected, save its status and value
-      chrome.storage.local.set({ tokenDetected: true, tokenValue: authHeader.value }, () => {
+      chrome.storage.local.set({ tokenDetected: true, tokenValue: authHeader.value.split(' ')[1] }, () => {
         setPopup(details.tabId, true, true);
       });
 
@@ -30,7 +30,6 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
         if (appVersionHeader) {
           chrome.storage.local.set({ appVersion: appVersionHeader.value });
-          console.log("App version detected: " + appVersionHeader.value)
         }
 
         if (deviceIdCookie) {
