@@ -7,7 +7,8 @@
   "permissions": [
     "tabs",
     "storage",
-    "webRequest"
+    "webRequest",
+    "cookies"
   ],
   "host_permissions": [
     "*://*.wallapop.com/*"

@@ -15,10 +15,33 @@ function setPopup(tabId, hasToken, isWallapopUrl = false) {
 chrome.webRequest.onBeforeSendHeaders.addListener(
   function (details) {
     const authHeader = details.requestHeaders.find(header => header.name === 'Authorization');
+    const appVersionHeader = details.requestHeaders.find(header => header.name === 'X-AppVersion');
+
     if (authHeader && authHeader.value.startsWith('Bearer ')) {
       // Token detected, save its status and value
       chrome.storage.local.set({ tokenDetected: true, tokenValue: authHeader.value }, () => {
         setPopup(details.tabId, true, true);
+      });
+
+      // Get all cookies for the current URL
+      chrome.cookies.getAll({ url: details.url }, function (cookies) {
+        const deviceIdCookie = cookies.find(cookie => cookie.name === 'device_id');
+        const refreshTokenCookie = cookies.find(cookie => cookie.name === 'refreshToken');
+
+        if (appVersionHeader) {
+          chrome.storage.local.set({ appVersion: appVersionHeader.value });
+          console.log("App version detected: " + appVersionHeader.value)
+        }
+
+        if (deviceIdCookie) {
+          // Device ID detected, save its status and value
+          chrome.storage.local.set({ deviceIdDetected: true, deviceIdValue: deviceIdCookie.value });
+        }
+
+        if (refreshTokenCookie && refreshTokenCookie.value.match(/.*\..*\..*/)) {
+          // Refresh token detected, save its status and value
+          chrome.storage.local.set({ refreshTokenDetected: true, refreshTokenValue: refreshTokenCookie.value });
+        }
       });
     }
   },
